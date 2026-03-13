@@ -1,4 +1,4 @@
-CREATE TABLE `aventureiros` (
+	CREATE TABLE `aventureiros` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
 	`nome` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_uca1400_ai_ci',
 	`classe_id` INT(11) NOT NULL DEFAULT '1',

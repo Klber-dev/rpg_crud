@@ -8,7 +8,7 @@ class Aventureiro
   private string $status;
   private ?DateTime $dataCriacao;
 
-  public function __construct($id = null, $nome, $classeId, $exp, $status = 'Y', $dataCriacao = null)
+  public function __construct($nome, $classeId, $exp, $status = 'Y', $id = null, $dataCriacao = null)
   {
     $this->id = $id;
     $this->nome = $nome;
@@ -18,10 +18,8 @@ class Aventureiro
     $this->dataCriacao = $dataCriacao;
   }
 
-  public function insert()
+  public function select()
   {
-    $query = "INSERT INTO aventureiros (nome, classe_id, EXP) VALUES (" . $this->nome . ',' . ',' . $this->classeId . ',' . $this->exp . ')';
-
     try {
       $server =  new PDO('mysql:host=localhost:3306;dbname=rpg_crud', 'root', 'toor');
       $server->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -35,7 +33,33 @@ class Aventureiro
       echo 'ERROR: ' . $e->getMessage();
     }
   }
+
+  public function insert()
+  {
+    try{
+      $server =  new PDO('mysql:host=localhost:3306;dbname=rpg_crud', 'root', 'toor');
+      $server->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+      $stmt = $server->prepare('INSERT INTO aventureiros (nome, classe_id, exp, status) VALUES (:nome, :classeId, :exp, :status)');
+      $stmt->execute([
+        ':nome' => $this->nome,
+        ':classeId' => $this->classeId,
+        ':exp' => $this->exp,
+        ':status' => $this->status
+      ]);
+    } catch (PDOException $e) {
+      echo 'ERROR: ' . $e->getMessage();
+    }
+  }
 }
 
-$teste = new Aventureiro(null, 'Kleber', 1, 100);
-$teste->insert();
+#$Kleber = new Aventureiro('Kleber', 1, 100);
+#$Kleber->select();
+
+#$Luan = new Aventureiro('Luan', 2, 200);
+#$Luan->insert();
+#$Luan->select();
+
+$Teste = new Aventureiro('Teste', 6, 120);
+$Teste->insert();
+$Teste->select();

@@ -21,14 +21,15 @@ class Aventureiro
   public function select()
   {
     try {
-      $server =  new PDO('mysql:host=localhost:3306;dbname=rpg_crud', 'root', 'toor');
+      $server =  new PDO('mysql:host=localhost:3306;dbname=rpg_crud', 'root', '');
       $server->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
       $data = ($server->query('SELECT * FROM aventureiros WHERE nome = ' . $server->quote($this->nome)))->fetchAll(PDO::FETCH_ASSOC);
 
       // $data->fetchAll(PDO::FETCH_ASSOC);
 
-      var_dump($data);
+      #var_dump($data);
+      return $data;
     } catch (PDOException $e) {
       echo 'ERROR: ' . $e->getMessage();
     }
@@ -36,8 +37,8 @@ class Aventureiro
 
   public function insert()
   {
-    try{
-      $server =  new PDO('mysql:host=localhost:3306;dbname=rpg_crud', 'root', 'toor');
+    try {
+      $server =  new PDO('mysql:host=localhost:3306;dbname=rpg_crud', 'root', '');
       $server->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
       $stmt = $server->prepare('INSERT INTO aventureiros (nome, classe_id, exp, status) VALUES (:nome, :classeId, :exp, :status)');
@@ -51,15 +52,29 @@ class Aventureiro
       echo 'ERROR: ' . $e->getMessage();
     }
   }
+
+  public function update($nnome)
+  {
+    try {
+      $server = new PDO('mysql:host=localhost:3306;dbname=rpg_crud', 'root', '');
+      $server->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+      $stmt = $server->prepare('UPDATE aventureiros SET nome = :nome where id = :id');
+      $stmt->execute([
+        ':nome' => $nnome,
+        ':id' => 4
+      ]);
+
+    } catch (PDOException $e) {
+      echo 'Erro' . $e->getMessage();
+    }
+  }
 }
 
-#$Kleber = new Aventureiro('Kleber', 1, 100);
-#$Kleber->select();
+$Carlos = new Aventureiro("Carlos", 4, 100);
+$Carlos->update("Carlinhos");
 
-#$Luan = new Aventureiro('Luan', 2, 200);
-#$Luan->insert();
-#$Luan->select();
 
-$Teste = new Aventureiro('Teste', 6, 120);
-$Teste->insert();
-$Teste->select();
+#$Carlos->insert(); 
+#$aventureiroSelecionado = $Carlos->select();
+#echo $aventureiroSelecionado;

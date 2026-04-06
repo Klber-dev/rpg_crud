@@ -1,14 +1,29 @@
-	CREATE TABLE `aventureiros` (
-	`id` INT(11) NOT NULL AUTO_INCREMENT,
-	`nome` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_uca1400_ai_ci',
-	`classe_id` INT(11) NOT NULL DEFAULT '1',
-	`exp` INT(11) NULL DEFAULT '0',
-	`status` ENUM('Y','N') NULL DEFAULT 'Y' COLLATE 'utf8mb4_uca1400_ai_ci',
-	`data_criacao` TIMESTAMP NULL DEFAULT current_timestamp(),
-	PRIMARY KEY (`id`) USING BTREE,
-	UNIQUE INDEX `UNIQUE` (`nome`) USING BTREE
-)
-COMMENT='\r\n'
-COLLATE='utf8mb4_uca1400_ai_ci'
-ENGINE=InnoDB
-;
+CREATE TABLE classes (
+  classe_id INT AUTO_INCREMENT PRIMARY KEY,
+  classe_nome VARCHAR(20) NOT NULL UNIQUE
+);
+
+CREATE TABLE aventureiros (
+  aventureiro_id INT AUTO_INCREMENT PRIMARY KEY,
+  aventureiro_nome VARCHAR(20) NOT NULL,
+  status ENUM('Y', 'N') NOT NULL DEFAULT 'Y',
+  xp INT NOT NULL DEFAULT 0,
+  data_criacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  classe_id INT NOT NULL,
+  user_id INT NOT NULL,
+  FOREIGN KEY (classe_id) REFERENCES classes(classe_id),
+);
+
+CREATE TABLE missao (
+  missao_id INT AUTO_INCREMENT PRIMARY KEY
+);
+
+CREATE TABLE missoes_relacao (
+  missao_id INT NOT NULL,
+  aventureiro_id INT NOT NULL,
+  PRIMARY KEY (missao_id, aventureiro_id),
+  FOREIGN KEY (missao_id) REFERENCES missao(missao_id),
+  FOREIGN KEY (aventureiro_id) REFERENCES aventureiros(aventureiro_id)
+);
+
+SELECT * FROM usuarios

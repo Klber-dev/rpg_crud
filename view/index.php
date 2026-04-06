@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <form action="salvar_aventureiro.php" method="POST">
+    <form action="../controller/salvar_aventureiro.php" method="POST">
 
         Nome:
         <input type="text" name="nome" required>
@@ -25,7 +25,3 @@
 </body>
 
 </html>
-<<<<<<<< HEAD:view/index.php
-========
-
->>>>>>>> 4e2449b (add):views/index.php

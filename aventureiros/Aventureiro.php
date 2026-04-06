@@ -57,7 +57,7 @@ class Aventureiro
       $server->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
       //Prepared stmt pra previnir injection. O prepare é tipo um template da query, e o execute é onde a gente passa os valores pra preencher esse template
-      $stmt = $server->prepare('INSERT INTO aventureiros (nome, classe_id, exp, status) VALUES (:nome, :classeId, :exp, :status)');
+      $stmt = $server->prepare('INSERT INTO aventureiros (aventureiro_nome, classe_id, xp, status) VALUES (:nome, :classeId, :exp, :status)');
       //Passando parâmetros para o execute, usando os atributos do objeto atual ($this)
       $stmt->execute([
         ':nome' => $this->nome,
@@ -82,7 +82,7 @@ class Aventureiro
       $stmt->execute([
         ':nome' => $nnome,
         //id no pelo
-        ':id' => 4
+        ':id' => $this->id
       ]);
 
     } catch (PDOException $e) {
@@ -97,7 +97,7 @@ class Aventureiro
 
       $stmt = $server->prepare('DELETE FROM aventureiros WHERE id = :id');
       $stmt->execute([
-        ':id' => 4
+        ':id' => $this->id
       ]);
     }catch(PDOException $e){
       echo 'Erro' . $e->getMessage();
@@ -105,16 +105,3 @@ class Aventureiro
 
   }
 }
-
-
-//Testando a classe Aventureiro
-$Carlos = new Aventureiro("Carlinhos", 4, 100);
-
-
-//Cria um array de arrays, averigurando aqui a possibilidade de encodar o resultado em json pra usar de API
-$aventureiroSelecionado = $Carlos->select();
-
-#var_dump($aventureiroSelecionado);
-var_dump($aventureiroSelecionado[0]['id']);
-
-$Carlos->delete();
